@@ -98,7 +98,6 @@ function addToCart() {
         carrito.push({ ...producto, talla: tallaSeleccionada.textContent });
         localStorage.setItem('carrito', JSON.stringify(carrito));
         actualizarCarrito();
-        alert(`Producto ${producto.nombre} añadido al carrito.`);
     }
 }
 
