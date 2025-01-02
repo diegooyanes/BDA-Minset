@@ -14,7 +14,29 @@ const overlay = document.getElementById('overlay');
 const cartContent = document.getElementById('carrito-contenido');
 const totalCarrito = document.getElementById('total-carrito');
 const checkoutButton = document.getElementById("checkout-button");
-const addToCartButton = document.getElementById('add-to-cart');
+const addToCartButton = document.querySelector('.cartBtn');
+const confirmationCard = document.getElementById('confirmation-card');
+const closeConfirmationCard = document.getElementById('close-confirmation-card');  // Referencia para la "X"
+
+// Referencia al toggle
+const themeToggle = document.getElementById('theme-toggle');
+
+// Cargar el estado inicial
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeToggle.checked = true;
+}
+
+// Escucha los cambios del interruptor
+themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+    }
+});
 
 // Carrito
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
@@ -52,6 +74,23 @@ function renderizarProductos() {
             img.src = originalSrc;
         });
     });
+}
+
+// Función para mostrar la tarjeta de confirmación
+function showConfirmationCard(producto) {
+    // Actualizar los datos de la tarjeta
+    document.getElementById('confirmation-product-name').textContent = producto.nombre;
+    document.getElementById('confirmation-product-price').textContent = `$${producto.precio}`;
+
+    // Mostrar la capa oscura y la tarjeta
+    overlay.style.display = 'block';
+    confirmationCard.style.display = 'block';
+}
+
+// Función para ocultar la tarjeta de confirmación
+function hideConfirmationCard() {
+    overlay.style.display = 'none';
+    confirmationCard.style.display = 'none';
 }
 
 // Navegar a detalles del producto
@@ -98,8 +137,14 @@ function addToCart() {
         carrito.push({ ...producto, talla: tallaSeleccionada.textContent });
         localStorage.setItem('carrito', JSON.stringify(carrito));
         actualizarCarrito();
+
+        // Mostrar la tarjeta de confirmación después de añadir al carrito
+        showConfirmationCard(producto);
     }
 }
+
+// Cerrar la tarjeta y la capa oscura cuando se haga clic en el fondo oscuro
+overlay.addEventListener('click', hideConfirmationCard);
 
 // Actualizar contador del carrito
 function actualizarCarrito() {
@@ -166,9 +211,30 @@ checkoutButton?.addEventListener('click', () => {
     }
 });
 
+// Función para cerrar la tarjeta de confirmación cuando se haga clic en la "X"
+closeConfirmationCard?.addEventListener('click', hideConfirmationCard);
+
 // Inicializar eventos y contenido
 renderizarProductos();
 if (window.location.pathname.includes('productos.html')) cargarDetallesProducto();
 addToCartButton?.addEventListener('click', addToCart);
 actualizarCarrito();
 
+// Desaparecer header al mover
+let lastScrollTop = 0; // Guarda la última posición de desplazamiento
+const header = document.getElementById('header');
+
+window.addEventListener('scroll', function() {
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > lastScrollTop) {
+        // Desplazamiento hacia abajo
+        header.style.top = '-80px'; // Ajusta según la altura de tu encabezado
+    } else {
+        // Desplazamiento hacia arriba
+        header.style.top = '0';
+    }
+
+    // Actualiza la posición de desplazamiento
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+});
