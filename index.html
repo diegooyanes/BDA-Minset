@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDA Mindset</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Fondo oscuro -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Cabecera -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="#" class="nav-link">            </a>
+        </div>
+        <div class="header-center">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Logo de Mi Marca" class="logo">
+            </a>
+        </div>        
+        <div class="header-right">
+            <button class="header-button" id="cart-button">CARRITO (0)</button>
+        </div>
+    </header>
+    
+   <!-- Sección Hero--> 
+    <main class="hero-section">
+        <img src="images/background.jpg" class="hero-image" />
+    </main>
+    
+    <main>
+        <h3 class="nuevo">NUEVO</h3>
+        <section id="productos" class="productos">
+            <!-- Los productos se generan dinámicamente con JS -->
+        </section>
+    </main>
+
+    <!-- Carrito deslizable -->
+    <div id="carrito-slide" class="carrito-slide">
+        <span id="close-carrito-icon">&times;</span>
+        <div id="carrito-contenido" class="carrito-contenido"></div>
+        <div id="total-carrito"></div>
+        <button id="checkout-button">PAGAR</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <ul class="redes-sociales">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+        </ul>
+        <p>&copy; 2024 BDA MINDSET. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>

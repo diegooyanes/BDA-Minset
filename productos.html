@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDA Mindset</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Fondo oscuro -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Cabecera -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="#" class="nav-link">            </a>
+        </div>
+        <div class="header-center">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Logo de Mi Marca" class="logo">
+            </a>
+        </div>        
+        <div class="header-right">
+            <button class="header-button" id="cart-button">CARRITO (0)</button>
+        </div>
+    </header>
+
+    <!-- Sección de Detalles del Producto -->
+    <div class="details-section">
+        <div class="product-images">
+            <img id="product-image-front" src="" alt="Producto - Frente" class="image-section">
+            <img id="product-image-back" src="" alt="Producto - Detrás" class="image-section">
+        </div>
+        <h3 id="product-title">Título del Producto</h3>
+        <p id="product-price">Precio del Producto</p>
+        <p id="product-description">Descripción del Producto</p>
+
+        <!-- Opciones de Talla -->
+        <div class="sizes">
+            <span class="size" data-size="S">S</span>
+            <span class="size" data-size="M">M</span>
+            <span class="size" data-size="L">L</span>
+            <span class="size" data-size="XL">XL</span>
+        </div>
+
+        <!-- Botones -->
+        <div class="buttons">
+            <button class="add-to-cart" id="add-to-cart">Añadir a la cesta</button>
+            <button class="buy-now">Comprar ahora</button>
+        </div>
+    </div>
+
+    <!-- Carrito deslizable -->
+    <div id="carrito-slide" class="carrito-slide">
+        <span id="close-carrito-icon">&times;</span>
+        <div id="carrito-contenido" class="carrito-contenido"></div>
+        <div id="total-carrito"></div>
+        <button id="checkout-button">PAGAR</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <ul class="redes-sociales">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+        </ul>
+        <p>&copy; 2024 BDA MINDSET. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
