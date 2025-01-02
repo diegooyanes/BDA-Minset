@@ -124,8 +124,8 @@ function cargarDetallesProducto() {
 // Añadir producto al carrito
 function addToCart() {
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    const producto = productos.find(p => p.id == id);
+    const id = parseInt(params.get('id'));
+    const producto = productos.find(p => p.id === id);
 
     if (producto) {
         const tallaSeleccionada = document.querySelector('.size.selected');
@@ -134,11 +134,20 @@ function addToCart() {
             return;
         }
 
-        carrito.push({ ...producto, talla: tallaSeleccionada.textContent });
+        const productoEnCarrito = carrito.find(
+            p => p.id === producto.id && p.talla === tallaSeleccionada.textContent
+        );
+
+        if (productoEnCarrito) {
+            productoEnCarrito.cantidad++;
+        } else {
+            carrito.push({ ...producto, talla: tallaSeleccionada.textContent, cantidad: 1 });
+        }
+
         localStorage.setItem('carrito', JSON.stringify(carrito));
         actualizarCarrito();
 
-        // Mostrar la tarjeta de confirmación después de añadir al carrito
+        // Mostrar la tarjeta de confirmación
         showConfirmationCard(producto);
     }
 }
@@ -157,27 +166,48 @@ function renderizarCarrito() {
     if (carrito.length === 0) {
         cartContent.innerHTML = '<p>No hay productos en el carrito.</p>';
         totalCarrito.textContent = '';
+        document.getElementById('carrito-total').textContent = '';
     } else {
         carrito.forEach(producto => {
             cartContent.innerHTML += `
                 <div class="producto-carrito">
                     <img src="${producto.imagen}" alt="${producto.nombre}">
                     <p>${producto.nombre} (Talla: ${producto.talla})</p>
-                    <p>$${producto.precio}</p>
-                    <button onclick="eliminarDelCarrito(${producto.id})">Eliminar</button>
+                    <p>$${producto.precio} x ${producto.cantidad}</p>
+                    <div class="cantidad-control">
+                        <button onclick="cambiarCantidad(${producto.id}, '${producto.talla}', -1)">-</button>
+                        <span>${producto.cantidad}</span>
+                        <button onclick="cambiarCantidad(${producto.id}, '${producto.talla}', 1)">+</button>
+                    </div>
+                    <button onclick="eliminarDelCarrito(${producto.id}, '${producto.talla}')">Eliminar</button>
                 </div>`;
         });
-        const total = carrito.reduce((sum, producto) => sum + producto.precio, 0);
-        totalCarrito.textContent = `Total: $${total}`;
+
+        const total = carrito.reduce((sum, producto) => sum + producto.precio * producto.cantidad, 0);
+        document.getElementById('carrito-total').textContent = `Total a pagar: $${total}`;
+    }
+}
+
+//Controlar cantidad de productos
+function cambiarCantidad(id, talla, cambio) {
+    const productoEnCarrito = carrito.find(p => p.id === id && p.talla === talla);
+    if (productoEnCarrito) {
+        productoEnCarrito.cantidad += cambio;
+        if (productoEnCarrito.cantidad <= 0) {
+            carrito = carrito.filter(p => !(p.id === id && p.talla === talla));
+        }
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        renderizarCarrito();
+        actualizarCarrito();
     }
 }
 
 // Eliminar producto del carrito
-function eliminarDelCarrito(id) {
-    carrito = carrito.filter(producto => producto.id !== id);
+function eliminarDelCarrito(id, talla) {
+    carrito = carrito.filter(producto => !(producto.id === id && producto.talla === talla));
     localStorage.setItem('carrito', JSON.stringify(carrito));
-    actualizarCarrito();
     renderizarCarrito();
+    actualizarCarrito();
 }
 
 // Mostrar el carrito deslizable
